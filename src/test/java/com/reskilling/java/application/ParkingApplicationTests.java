@@ -57,15 +57,13 @@ class ParkingApplicationTests {
 	}
 
 	@Test
-	public void addNewVehicleWithWrongRandomNumber(){
+	public void createNewVehicleWithWrongRandomNumber(){
 		MockedStatic<ParkingUtils> parkingUtilsMockedStatic = Mockito.mockStatic(ParkingUtils.class);
 		parkingUtilsMockedStatic.when(()->ParkingUtils.generateRandomNumber(any(int.class))).thenReturn(4);
 		assertThrows(ClassNotFoundException.class, () -> {
-			ParkingApplication.addNewVehicle(vehicle,parking);
+			ParkingApplication.createNewVehicle(vehicle);
 		});
 	}
-
-
 	@Test
 	@Tag("addCar")
 	void sucessAddCar() {

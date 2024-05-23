@@ -45,10 +45,6 @@ public class Parking {
         setBikeSpot(defineNumberBikesSpot());
     }
 
-    public String getNom() {
-        return nom;
-    }
-
     public int getCarSpot() {
         return carSpot;
     }
@@ -104,7 +100,6 @@ public class Parking {
                 .filter(vehicle -> vehicle.getClass().getSimpleName().contains(vehicleType))
                 .count();
         return (int)numberOfVehicleType;
-
     }
 
     public int numberVehicleFromColor(String color){

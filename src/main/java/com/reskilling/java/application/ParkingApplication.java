@@ -17,21 +17,21 @@ import java.util.List;
 
 @SpringBootApplication
 public class ParkingApplication {
-	private static List<String> vehicleType = Arrays.asList("Car","Moto","Bike");
+	private final static List<String> vehicleType = Arrays.asList("Car","Moto","Bike");
 
 	public static void main(String[] args) throws ClassNotFoundException {
 		SpringApplication.run(ParkingApplication.class, args);
-
-		Vehicle vehicle = new Vehicle();
 		Parking parking = null;
 
 		parking = initParking(parking, args);
+
+		Vehicle vehicle = new Vehicle();
 
 		String color;
 
 
 		while (parking.numberOfThisTypeVehicle("Bike") < parking.getBikeSpot()) {
-			vehicle = addNewVehicle(vehicle, parking);
+			vehicle = createNewVehicle(vehicle);
 			checkEntryParking(vehicle, parking);
 		}
 		// Parking application end -> no more Bike spaces in the parking
@@ -61,8 +61,8 @@ public class ParkingApplication {
 		return parking;
 	}
 
-	public static Vehicle addNewVehicle(Vehicle vehicle, Parking parking) throws ClassNotFoundException {
-		// Création d'un nouveau type de véhicule aléatoire
+	public static Vehicle createNewVehicle(Vehicle vehicle) throws ClassNotFoundException {
+		// Create a random type of vehicle
 		int randNumber = ParkingUtils.generateRandomNumber(vehicleType.size());
 		try {
 			switch (randNumber) {
@@ -101,7 +101,7 @@ public class ParkingApplication {
 			parking.addVehicle(vehicle);
 			System.out.println(vehicle.entreeParking());
 		}else {
-			System.out.println(vehicle.refusParking());;
+			System.out.println(vehicle.refusParking());
 		}
 	}
 

@@ -1,16 +1,25 @@
 package com.reskilling.java.bean;
 
-import com.reskilling.java.bean.Parking;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-
+@ExtendWith(MockitoExtension.class)
 public class parkingTest {
+    @Mock
+    Car car;
+    @Mock
+    Moto moto;
+    @Mock
+    Bike bike;
+
     private Parking parkingUnderTest;
 
     @BeforeEach
@@ -34,30 +43,44 @@ public class parkingTest {
         });
     }
 
-/*
+//    @Test
+//    public void
     @Test
     @Tag("ParkingSpotsForMoto")
     public void motoDefautSpotWas15(){
-        final int result = parkingUnderTest.getMotorcycleSpot();
+        final int result = parkingUnderTest.getMotoSpot();
         assertThat(result).isEqualTo(15);
     }
 
     @Test
     @Tag("ParkingSpotsForBike")
-    public void bikeSpotsMustBeBetween1And10(){
+    public void bikeSpotsMustBeBetween1And10() {
         parkingUnderTest.setBikeSpot(0);
         final int testLessThan1 = parkingUnderTest.getBikeSpot();
-        assertThat(testLessThan1,allOf(
-                greaterThanOrEqualTo(1),
-                lessThanOrEqualTo(10)
-        ));
+        assertThat(testLessThan1).isBetween(1, 10);
 
         parkingUnderTest.setBikeSpot(11);
         final int testMoreThan10 = parkingUnderTest.getBikeSpot();
-        assertThat(testMoreThan10,allOf(
-                greaterThanOrEqualTo(1),
-                lessThanOrEqualTo(10)
-        ));
- */
+        assertThat(testMoreThan10).isBetween(1, 10);
+    }
 
+    @RepeatedTest(value = 10, name = "repeatedTestBikeSportMustBetween1And10 {currentRepetition}/{totalRepetitions}")
+    @Tag("ParkingSpotsForBike")
+    public void repeatedTestBikeSportMustBetween1And10(){
+        parkingUnderTest.defineNumberBikesSpot();
+        assertThat(parkingUnderTest.getBikeSpot()).isBetween(1, 10);
+    }
+
+    @Test
+    public void ShouldReturnNumberDesignedByParameters(){
+        parkingUnderTest.addVehicle(car);
+        parkingUnderTest.addVehicle(moto);
+        parkingUnderTest.addVehicle(moto);
+        parkingUnderTest.addVehicle(bike);
+        parkingUnderTest.addVehicle(bike);
+        parkingUnderTest.addVehicle(bike);
+
+        int result = parkingUnderTest.numberOfThisTypeVehicle("moto");
+        assertThat(result).isEqualTo(2);
+    }
 }
