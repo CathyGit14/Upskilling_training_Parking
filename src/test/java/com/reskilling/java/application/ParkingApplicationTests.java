@@ -28,20 +28,18 @@ class ParkingApplicationTests {
 	@Mock
 	Bike bike;
 	@Mock
-	Vehicle vehicle;
-	@Mock
 	Parking parking;
 
 	ParkingApplication parkingApplication;
 
 	@BeforeEach
-	public void initParkingApplication(){
+	void initParkingApplication(){
 		parkingApplication = new ParkingApplication();
 	}
 
 	@Test
 	@Tag("initParking")
-	public void initParkingWithMoreThan3parameters(){
+	void initParkingWithMoreThan3parameters(){
 		String[] args = {"AXEO", "10", "10", "5"};
 		assertThrows(InvalidParameterException.class, () -> {
 			ParkingApplication.main(args);
@@ -49,7 +47,7 @@ class ParkingApplicationTests {
 	}
 	@Test
 	@Tag("initParking")
-	public void initParkingWithLessThan2parameters(){
+	void initParkingWithLessThan2parameters(){
 		String[] args = {"AXEO"};
 		assertThrows(InvalidParameterException.class, () -> {
 			ParkingApplication.main(args);
@@ -57,11 +55,11 @@ class ParkingApplicationTests {
 	}
 
 	@Test
-	public void createNewVehicleWithWrongRandomNumber(){
+	void createNewVehicleWithWrongRandomNumber(){
 		MockedStatic<ParkingUtils> parkingUtilsMockedStatic = Mockito.mockStatic(ParkingUtils.class);
 		parkingUtilsMockedStatic.when(()->ParkingUtils.generateRandomNumber(any(int.class))).thenReturn(4);
 		assertThrows(ClassNotFoundException.class, () -> {
-			ParkingApplication.createNewVehicle(vehicle);
+			ParkingApplication.createNewVehicle();
 		});
 	}
 	@Test
@@ -131,7 +129,7 @@ class ParkingApplicationTests {
 	}
 
 	@Test
-	public void searchNumberAvailableSpotForUnknownVehicle(){
+	void searchNumberAvailableSpotForUnknownVehicle(){
 		assertThrows(IllegalArgumentException.class, () -> {
 			ParkingApplication.numberAvailableSpot("Unknow", parking);
 		});

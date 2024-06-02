@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
-public class parkingTest {
+class ParkingTest {
     @Mock
     Car car;
     @Mock
@@ -23,13 +23,13 @@ public class parkingTest {
     private Parking parkingUnderTest;
 
     @BeforeEach
-    public void initParking(){
+    void initParking(){
         parkingUnderTest = new Parking();
     }
 
     @Test
     @Tag("ParkingSpotsForCar")
-    public void carSpotsCanNotBeLesserThan10(){
+    void carSpotsCanNotBeLesserThan10(){
         assertThrows(IllegalArgumentException.class, () -> {
             parkingUnderTest.setCarSpot(9);
         });
@@ -37,7 +37,7 @@ public class parkingTest {
 
     @Test
     @Tag("ParkingSpotsForMoto")
-    public void motoSpotsCanNotBeLesserThan1(){
+    void motoSpotsCanNotBeLesserThan1(){
         assertThrows(IllegalArgumentException.class, () -> {
             parkingUnderTest.setMotoSpot(0);
         });
@@ -47,14 +47,14 @@ public class parkingTest {
 //    public void
     @Test
     @Tag("ParkingSpotsForMoto")
-    public void motoDefautSpotWas15(){
+    void motoDefautSpotWas15(){
         final int result = parkingUnderTest.getMotoSpot();
         assertThat(result).isEqualTo(15);
     }
 
     @Test
     @Tag("ParkingSpotsForBike")
-    public void bikeSpotsMustBeBetween1And10() {
+    void bikeSpotsMustBeBetween1And10() {
         parkingUnderTest.setBikeSpot(0);
         final int testLessThan1 = parkingUnderTest.getBikeSpot();
         assertThat(testLessThan1).isBetween(1, 10);
@@ -66,13 +66,13 @@ public class parkingTest {
 
     @RepeatedTest(value = 10, name = "repeatedTestBikeSportMustBetween1And10 {currentRepetition}/{totalRepetitions}")
     @Tag("ParkingSpotsForBike")
-    public void repeatedTestBikeSportMustBetween1And10(){
+    void repeatedTestBikeSportMustBetween1And10(){
         parkingUnderTest.defineNumberBikesSpot();
         assertThat(parkingUnderTest.getBikeSpot()).isBetween(1, 10);
     }
 
     @Test
-    public void ShouldReturnNumberDesignedByParameters(){
+    void ShouldReturnNumberDesignedByParameters(){
         parkingUnderTest.addVehicle(car);
         parkingUnderTest.addVehicle(moto);
         parkingUnderTest.addVehicle(moto);

@@ -17,13 +17,13 @@ import java.util.List;
 
 @SpringBootApplication
 public class ParkingApplication {
-	private final static List<String> vehicleType = Arrays.asList("Car","Moto","Bike");
+	private static final List<String> vehicleType = Arrays.asList("Car","Moto","Bike");
 
 	public static void main(String[] args) throws ClassNotFoundException {
 		SpringApplication.run(ParkingApplication.class, args);
 		Parking parking = null;
 
-		parking = initParking(parking, args);
+		parking = initParking(args);
 
 		Vehicle vehicle = new Vehicle();
 
@@ -31,7 +31,7 @@ public class ParkingApplication {
 
 
 		while (parking.numberOfThisTypeVehicle("Bike") < parking.getBikeSpot()) {
-			vehicle = createNewVehicle(vehicle);
+			vehicle = createNewVehicle();
 			checkEntryParking(vehicle, parking);
 		}
 		// Parking application end -> no more Bike spaces in the parking
@@ -46,39 +46,42 @@ public class ParkingApplication {
 
 	}
 
-	public static Parking initParking(Parking parking, String[] parameters) throws InvalidParameterException{
+	public static Parking initParking(String[] parameters) throws InvalidParameterException{
+		Parking parkingNew;
 		try {
 			if (parameters.length == 3) {
-				parking = new Parking(parameters[0], parameters[1], parameters[2]);
+				parkingNew = new Parking(parameters[0], parameters[1], parameters[2]);
 			} else if (parameters.length == 2) {
-				parking = new Parking(parameters[0], parameters[1]);
+				parkingNew = new Parking(parameters[0], parameters[1]);
 			}else {
 				throw new InvalidParameterException();
 			}
 		}catch (InvalidParameterException ex){
 			throw new InvalidParameterException("Format paramétrage attendu : String Int Int(Facultatif)");
 		}
-		return parking;
+		return parkingNew;
 	}
 
-	public static Vehicle createNewVehicle(Vehicle vehicle) throws ClassNotFoundException {
+	public static Vehicle createNewVehicle() throws ClassNotFoundException {
 		// Create a random type of vehicle
+		Vehicle vehicleNew;
 		int randNumber = ParkingUtils.generateRandomNumber(vehicleType.size());
 		try {
 			switch (randNumber) {
 				case 0:
-					vehicle = new Car();
+					vehicleNew = new Car();
 					break;
 				case 1:
-					vehicle = new Moto();
+					vehicleNew = new Moto();
 					break;
 				case 2:
-					vehicle = new Bike();
+					vehicleNew = new Bike();
 					break;
 				default:
 					throw new ClassNotFoundException();
 			}
-/*
+// Autres méthodes
+			/*
 				String className = gestion.getVehicleType(randNumber);
 				Object cls = Class.forName("com.reskilling.java.bean." + className).getDeclaredConstructor().newInstance();
 				vehicle = (Vehicle) cls;
@@ -88,9 +91,9 @@ public class ParkingApplication {
 					System.out.println(ex);
 */
 		} catch (ClassNotFoundException ex){
-			throw new ClassNotFoundException("Class not found " + ex.toString());
+			throw new ClassNotFoundException("Class not found " + ex);
 		}
-		return vehicle;
+		return vehicleNew;
 	}
 
 	public static void checkEntryParking(Vehicle vehicle, Parking parking) {
